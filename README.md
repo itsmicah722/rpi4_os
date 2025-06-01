@@ -99,7 +99,7 @@ but I will make a section for that soon.
 
 Make the build instructions more comprehensive and add a section for running on REAL hardware without QEMU emulation
 
-## Credits:
+## Credits
 
 All credit goes to
 the [Rust RaspberryPI-OS Tutorials Repository](https://github.com/rust-embedded/rust-raspberrypi-OS-tutorials) and
