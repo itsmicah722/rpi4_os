@@ -6,10 +6,7 @@ RUN apk add --no-cache \
     musl-locales-lang
 
 # Rust docker locations && locale (English US)
-ENV RUSTUP_HOME=/usr/local/rustup \
-    CARGO_HOME=/usr/local/cargo \
-    PATH=/usr/local/cargo/bin:$PATH \
-    LANG=en_US.UTF-8 \
+ENV LANG=en_US.UTF-8 \
     LANGUAGE=en_US.UTF-8 \
     LC_ALL=en_US.UTF-8
 
@@ -32,10 +29,19 @@ RUN curl -L $GNU_X86_64_TOOLCHAIN_URL -o /tmp/arm-docker.tar.xz && \
 # Make the toolchain binary available on system PATH
 ENV PATH="/opt/arm-gnu-toolchain-14.2.rel1-x86_64-aarch64-none-elf/bin:$PATH"
 
-# Install Rust + target + helpers
-RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && \
-    rustup target add aarch64-unknown-none && \
-    cargo install cargo-binutils rustfilt serial-console
+# Configure Rust environment variables before running rustup-init
+ENV CARGO_HOME=/usr/local/cargo
+ENV RUSTUP_HOME=/usr/local/rustup
+ENV PATH="$CARGO_HOME/bin:${PATH}"
+
+# Install Rust + AArch64 bare-metal target + components
+RUN mkdir -p "$CARGO_HOME" "$RUSTUP_HOME" && \
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain stable && \
+    rustup target add aarch64-unknown-none-softfloat && \
+    rustup component add rust-src llvm-tools-preview rustfmt clippy
+
+# Install any cargo-based helpers
+RUN cargo install cargo-binutils rustfilt serial-console
 
 WORKDIR /workspace
 CMD ["/bin/sh"]
