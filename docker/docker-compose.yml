@@ -1,0 +1,15 @@
+services:
+  rpi4-arm64-toolchain:
+    container_name: rpi4-os
+    volumes:
+      - ..:/workspace
+    working_dir: /workspace
+    command: /bin/sh
+    tty: true
+    stdin_open: true
+    environment:
+      - RUSTUP_HOME=/usr/local/rustup
+      - CARGO_HOME=/usr/local/cargo
+    build:
+      context: .
+      dockerfile: Dockerfile

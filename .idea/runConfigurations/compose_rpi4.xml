@@ -1,0 +1,18 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="compose-rpi4" type="docker-deploy" factoryName="docker-compose.yml" focusToolWindowBeforeRun="true" server-name="Docker">
+    <deployment type="docker-compose.yml">
+      <settings>
+        <option name="envFilePath" value="" />
+        <option name="removeImagesOnComposeDown" value="LOCAL" />
+        <option name="removeVolumesOnComposeDown" value="true" />
+        <option name="services">
+          <list>
+            <option value="rpi4-arm64-toolchain" />
+          </list>
+        </option>
+        <option name="sourceFilePath" value="docker/docker-compose.yml" />
+      </settings>
+    </deployment>
+    <method v="2" />
+  </configuration>
+</component>
